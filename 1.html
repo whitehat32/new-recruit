@@ -1,0 +1,100 @@
+﻿<html>
+<head><meta charset="utf-8">
+<title> 打地鼠 </title>
+<script>
+ function myfirst(){
+   var gm=1;
+   var bs=document.getElementById("bs");
+   bs.onclick=function () { //点击按钮开始游戏
+   gm++;
+   
+   var canvas=document.getElementById("canvas");
+ 
+   if(canvas==null)
+   {
+   alert("请使用IE8以上浏览器");//
+   return false;
+   }
+   var cxt=canvas.getContext("2d");
+   var bkg=new Image();
+   bkg.src="背景.jpg";
+    bkg.onload=function(){
+     return true;
+   } //载入背景
+    var img=new Image();
+ img.src="地鼠.jpg";//载入地shu
+  var x=[];
+  var y=[];
+  var F=[];
+   function rdm(){
+   return Math.floor(Math.random()*3+1);
+  }
+  function cal(){
+   for(var i=0;i<2;i++){
+   x[i]=rdm()*200;
+   y[i]=rdm()*200;
+   F[i]=1;
+    while( x[1]==x[0] && y[1]==y[0]){
+   x[i]=rdm()*200;
+   y[i]=rdm()*200;
+    }
+   }
+   setTimeout(cal,1500);
+
+  }
+  cal();
+    
+   function draw(){
+    cxt.save();
+    cxt.drawImage(bkg,0,0);
+    if(gm%2==0){
+    for(var i=0;i<2;i++){
+    if(F[i]==0) continue;
+    cxt.drawImage(img,x[i],y[i],200,200);
+     }
+    }
+    cxt.restore();
+    window.requestAnimationFrame(draw);
+   }
+   
+   draw();
+    var m=0;
+    Mclick();
+   
+   function Mclick(){ canvas.addEventListener("mousedown",handler,false);
+ function handler(e){
+  if(!e)e=window.event;
+   if(gm%2==0){
+   for(var i=0;i<2;i++){
+  var pos=[];
+  pos[0]=e.clientX;
+  pos[1]=e.clientY;  
+  if(x[i]<=pos[0] &&pos[0]<=x[i]+200 &&  y[i]<=pos[1]&&pos[1]<=y[i]+200){
+   F[i]=0;
+   m+=1; document.getElementById("tan").innerHTML="分数:"+m;
+     }
+   }
+  }
+  }
+ }
+  var n=1;
+ function MTime(){
+document.getElementById("yang").innerHTML="时间:"+n;
+   n++;
+   setTimeout(MTime,1000);
+  }
+  MTime();
+ }
+}
+</script>
+
+</head>
+<body>
+<canvas id="canvas" height="1000" width="1000"> </canvas>
+<h1>点击按钮开始游戏</h1>
+<button id="bs">我是一个按钮</button>
+<p id="yang">分数</p>
+<p id="tan">0</p>
+<script>myfirst();</script>
+</body>
+</html>
